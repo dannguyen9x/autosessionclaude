@@ -6,6 +6,9 @@ Thumbs.db
 # autosession runtime state (handoffs, flags, run logs) — machine-local
 .autosession/
 
+# local machine-specific runtime config (paths, keys) — keep out of git
+autosession.config.json
+
 # editor
 .vscode/
 .idea/
