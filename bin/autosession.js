@@ -197,6 +197,7 @@ async function cmdRun(positional, flags) {
   let resumeId = null;
   let totalCost = 0;
   let consecutiveHandoffs = 0;
+  let consecutiveFailures = 0;
 
   for (let session = 1; session <= maxSessions; session++) {
     const resuming = !handoff && !!resumeId;
@@ -219,10 +220,26 @@ async function cmdRun(positional, flags) {
     const sid = res.sessionId;
     console.log(`  ↳ exit ${res.exitCode}  session ${short(sid)}  cost $${(res.costUsd || 0).toFixed(4)}  total $${totalCost.toFixed(4)}`);
 
-    if (!res.ok && !res.resultText) {
-      console.error(`  ✖ session failed: ${firstLine(res.stderr)}`);
-      break;
+    // A "hard failure" is an error where NO tokens were spent — i.e. the session
+    // never really ran (not logged in, bad --model, spawn error, API refusal).
+    // Bail after two of these in a row instead of burning the whole session
+    // budget retrying the same broken condition. (A --max-turns stop is is_error
+    // too, but DID spend tokens, so it is treated as a normal incomplete turn.)
+    if (!res.ok && rawTokens(res.raw) === 0) {
+      consecutiveFailures++;
+      const why = firstLine(res.resultText || res.stderr);
+      console.error(`  ✖ session made no progress (${consecutiveFailures}/2): ${why}`);
+      if (consecutiveFailures >= 2) {
+        console.error('  ✖ two failed sessions in a row — stopping.');
+        console.error('     Is `claude` logged in for headless use? Try `claude` → /login, set');
+        console.error('     ANTHROPIC_API_KEY, or check AUTOSESSION_CLAUDE_BIN / --model.');
+        return;
+      }
+      handoff = null;
+      resumeId = null; // retry from scratch once
+      continue;
     }
+    consecutiveFailures = 0;
 
     // Completion?
     if (containsSentinel(res.resultText, sentinel)) {
@@ -274,7 +291,8 @@ async function cmdRun(positional, flags) {
       totalCost += sres.costUsd || 0;
       if (!sres.ok || !sres.resultText.trim()) {
         console.error('  ✖ handoff generation failed; stopping to avoid losing context.');
-        break;
+        console.error('    The working session is intact — re-run to continue.');
+        return;
       }
       handoff = sres.resultText.trim();
       // updateLatest:false — the runner injects this handoff itself via the next
@@ -297,7 +315,7 @@ async function cmdRun(positional, flags) {
       resumeId = sid;
       if (!resumeId) {
         console.error('  ✖ no session id to resume and task not complete; stopping.');
-        break;
+        return;
       }
     }
   }
@@ -332,6 +350,11 @@ async function cmdDoctor() {
 function normThreshold(n) {
   if (Number.isNaN(n)) return DEFAULTS.threshold;
   return n > 1 ? n / 100 : n;
+}
+function rawTokens(raw) {
+  const u = raw && raw.usage;
+  if (!u) return 0;
+  return (u.input_tokens || 0) + (u.cache_read_input_tokens || 0) + (u.cache_creation_input_tokens || 0) + (u.output_tokens || 0);
 }
 function transcriptFor(sessionId) {
   const p = path.join(paths.projectDir(CWD), `${sessionId}.jsonl`);
