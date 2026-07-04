@@ -1,0 +1,30 @@
+{
+  "description": "autosession — monitor context usage on Stop; inject the pending handoff on SessionStart",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/stop-check-context.js"],
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/session-start.js"],
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "autosessionclaude",
+  "owner": {
+    "name": "dannguyen9x",
+    "email": "dannguyen029x@gmail.com"
+  },
+  "metadata": {
+    "description": "Automatic context handoff for Claude Code.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "autosession",
+      "source": "./",
+      "description": "Detects when a session's context window is ~90% full, writes a self-contained handoff, and auto-loads it into a fresh session so work continues without losing state."
+    }
+  ]
+}

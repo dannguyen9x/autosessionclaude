@@ -1,0 +1,33 @@
+{
+  "//": "Manual alternative to installing the plugin. Merge these hooks into your",
+  "//1": ".claude/settings.json (project) or ~/.claude/settings.json (global).",
+  "//2": "Replace ABSOLUTE_PATH_TO_REPO with where you cloned autosessionclaude,",
+  "//3": "e.g. E:/repo/autosessionclaude (use forward slashes on Windows too).",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["ABSOLUTE_PATH_TO_REPO/hooks/stop-check-context.js"],
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["ABSOLUTE_PATH_TO_REPO/hooks/session-start.js"],
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

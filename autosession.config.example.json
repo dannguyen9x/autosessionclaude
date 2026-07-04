@@ -1,0 +1,13 @@
+{
+  "//": "Copy to autosession.config.json in your project root and edit. All keys optional.",
+  "threshold": 0.9,
+  "contextWindow": null,
+  "claudeBin": "claude",
+  "model": null,
+  "maxSessions": 20,
+  "maxTurnsPerSession": null,
+  "maxCostUsd": null,
+  "completionSentinel": "<<<AUTOSESSION_TASK_COMPLETE>>>",
+  "permissionMode": "default",
+  "notify": true
+}

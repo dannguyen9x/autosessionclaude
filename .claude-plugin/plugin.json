@@ -1,0 +1,19 @@
+{
+  "name": "autosession",
+  "description": "Automatic context handoff for Claude Code: warns when a session's context window nears full, writes a self-contained handoff, and auto-loads it into the next session so work continues seamlessly.",
+  "author": {
+    "name": "dannguyen9x",
+    "email": "dannguyen029x@gmail.com"
+  },
+  "homepage": "https://github.com/dannguyen9x/autosessionclaude",
+  "repository": "https://github.com/dannguyen9x/autosessionclaude",
+  "license": "MIT",
+  "keywords": [
+    "context",
+    "handoff",
+    "session",
+    "auto-compact",
+    "hooks",
+    "autonomous"
+  ]
+}

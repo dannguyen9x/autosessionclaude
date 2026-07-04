@@ -1,0 +1,4 @@
+# Normalize line endings to LF so hook shebangs stay valid on macOS/Linux.
+* text=auto eol=lf
+*.png binary
+*.jpg binary

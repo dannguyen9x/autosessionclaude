@@ -1,0 +1,47 @@
+{
+  "name": "autosessionclaude",
+  "version": "0.1.0",
+  "description": "Automatic context handoff for Claude Code: when a session's context window fills up, summarise it and continue seamlessly in a fresh session.",
+  "keywords": [
+    "claude",
+    "claude-code",
+    "context",
+    "handoff",
+    "hooks",
+    "plugin",
+    "autonomous",
+    "agent"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "dannguyen9x",
+    "email": "dannguyen029x@gmail.com"
+  },
+  "homepage": "https://github.com/dannguyen9x/autosessionclaude#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dannguyen9x/autosessionclaude.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dannguyen9x/autosessionclaude/issues"
+  },
+  "type": "commonjs",
+  "bin": {
+    "autosession": "bin/autosession.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "hooks/",
+    "commands/",
+    "templates/",
+    ".claude-plugin/"
+  ],
+  "scripts": {
+    "status": "node bin/autosession.js status",
+    "test": "node test/run.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
