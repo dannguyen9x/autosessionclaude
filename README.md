@@ -124,6 +124,17 @@ autosession status
 Claude writes a full handoff to `.autosession/latest-handoff.md`. `/clear` or open a
 new session and it resumes automatically.
 
+### Resume in the new session
+
+After `/clear` (or opening a new session), the `SessionStart` hook auto-loads the
+handoff — just type "continue". Prefer an explicit command? Run:
+
+```
+/autosession:resume
+```
+
+It reads the newest handoff from `.autosession/` and continues from its Next steps.
+
 ### Run a task autonomously
 
 ```bash
